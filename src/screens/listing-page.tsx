@@ -5,7 +5,7 @@ import CatCard from "../components/cat-card";
 import Container from "../ui/container";
 import Pagination from "../components/pagination";
 import CatCardSkeleton from "../components/cat-card-skeleton";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Cat, SortOrder } from "@/utils/types";
 import SortDropdown from "@/components/sort-dropdown";
 import { useFetch } from "@/hooks/useFetch";
@@ -13,15 +13,16 @@ import { useFetch } from "@/hooks/useFetch";
 const CATS_PER_PAGE = 15;
 
 const ListingPage = () => {
-  const searchParams = useSearchParams();
   const pathname = usePathname();
   const [page, setPage] = useState<number>(() => {
-    const pageParam = searchParams.get("page");
+    if (typeof window === "undefined") return 1;
+    const pageParam = new URLSearchParams(window.location.search).get("page");
     const parsed = pageParam ? parseInt(pageParam, 10) : NaN;
     return !isNaN(parsed) && parsed > 0 ? parsed : 1;
   });
   const [sortOrder, setSortOrder] = useState<SortOrder>(() => {
-    const sortParam = searchParams.get("sort");
+    if (typeof window === "undefined") return "RANDOM";
+    const sortParam = new URLSearchParams(window.location.search).get("sort");
     return sortParam === "RANDOM" || sortParam === "ASC" || sortParam === "DESC"
       ? sortParam
       : "RANDOM";
