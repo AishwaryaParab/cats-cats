@@ -17,7 +17,7 @@ const CatCard = ({ id, url }: CatCardProps) => {
   return (
     <div className="flex justify-center">
       <Link href={`/cat/${id}`} className="cursor-pointer">
-        <div className="relative w-[250px] h-[250px] bg-gray-100 rounded-lg">
+        <div className="relative w-[250px] h-[250px] bg-gray-100 rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
           {!imageLoaded && (
             <div className="absolute inset-0 flex justify-center items-center">
               <LoadingSpinner />

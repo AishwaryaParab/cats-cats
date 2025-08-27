@@ -9,13 +9,18 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
   const breed = cat?.breeds?.[0];
   return (
     <>
-      <div className="flex gap-4">
-        <div className="relative w-1/2 h-98">
-          <Image src={cat.url} alt="cat-image" fill className="object-cover" />
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="relative lg:w-1/2 h-100 rounded-lg">
+          <Image
+            src={cat.url}
+            alt="cat-image"
+            fill
+            className="object-fill rounded-lg"
+          />
         </div>
 
         {breed ? (
-          <div className="w-1/2 flex flex-col gap-4">
+          <div className="lg:w-1/2 flex flex-col gap-4">
             <h1 className="text-2xl font-bold text-primary">{breed.name}</h1>
 
             <div>
@@ -65,7 +70,7 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
                   <span className="text-primary font-semibold">
                     Temperament
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mt-1">
                     {breed.temperament.split(", ").map((temp, idx) => (
                       <span
                         key={idx}

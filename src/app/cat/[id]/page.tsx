@@ -6,6 +6,7 @@ import { useFetch } from "@/hooks/useFetch";
 import Button from "@/ui/button";
 import Container from "@/ui/container";
 import { Cat } from "@/utils/types";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
 
@@ -25,7 +26,10 @@ const CatDetail = ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <Container>
       <Link href="/">
-        <Button className="my-4">Back to Home</Button>
+        <Button className="mb-4 flex items-center gap-1">
+          <ArrowLeft className="w-5 h-5" />
+          <span>Back to Home</span>
+        </Button>
       </Link>
 
       {loading ? (
