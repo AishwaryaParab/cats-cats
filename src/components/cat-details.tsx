@@ -1,7 +1,11 @@
+import { Cat } from "@/utils/types";
 import Image from "next/image";
-import Container from "../ui/container";
 
-const CatDetails = ({ cat }) => {
+interface CatDetailsProps {
+  cat: Cat;
+}
+
+const CatDetails = ({ cat }: CatDetailsProps) => {
   const breed = cat?.breeds?.[0];
   return (
     <>
@@ -10,74 +14,80 @@ const CatDetails = ({ cat }) => {
           <Image src={cat.url} alt="cat-image" fill className="object-cover" />
         </div>
 
-        <div className="w-1/2 flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-purple-500">{breed?.name}</h1>
+        {breed ? (
+          <div className="w-1/2 flex flex-col gap-4">
+            <h1 className="text-2xl font-bold text-primary">{breed.name}</h1>
 
-          {breed && (
             <div>
               {breed.description && (
                 <div>
-                  <h3 className="text-purple-500 font-semibold">Description</h3>
+                  <h3 className="text-primary font-semibold">Description</h3>
                   <p>{breed.description}</p>
                 </div>
               )}
             </div>
-          )}
 
-          <div className="grid grid-cols-2 gap-4">
-            {breed.origin && (
-              <div>
-                <span className="text-purple-500 font-semibold">Origin:</span>
-                <p>{breed.origin}</p>
-              </div>
-            )}
-
-            {breed.life_span && (
-              <div>
-                <span className="text-purple-500 font-semibold">
-                  Life Span:
-                </span>
-                <p>{breed.life_span} years</p>
-              </div>
-            )}
-
-            {breed.weight?.metric && (
-              <div>
-                <span className="text-purple-500 font-semibold">Weight:</span>
-                <p>{breed.weight.metric} kg</p>
-              </div>
-            )}
-
-            {breed.energy_level && (
-              <div>
-                <span className="text-purple-500 font-semibold">
-                  Energy Level:
-                </span>
-                <p>{breed.energy_level}/5</p>
-              </div>
-            )}
-          </div>
-
-          <div>
-            {breed.temperament && (
-              <div>
-                <span className="text-purple-500 font-semibold">
-                  Temperament
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {breed.temperament.split(", ").map((temp, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1 bg-purple-500 text-white rounded-full text-sm"
-                    >
-                      {temp}
-                    </span>
-                  ))}
+            <div className="grid grid-cols-2 gap-4">
+              {breed.origin && (
+                <div>
+                  <span className="text-primary font-semibold">Origin:</span>
+                  <p>{breed.origin}</p>
                 </div>
-              </div>
-            )}
+              )}
+
+              {breed.life_span && (
+                <div>
+                  <span className="text-primary font-semibold">Life Span:</span>
+                  <p>{breed.life_span} years</p>
+                </div>
+              )}
+
+              {breed.weight?.metric && (
+                <div>
+                  <span className="text-primary font-semibold">Weight:</span>
+                  <p>{breed.weight.metric} kg</p>
+                </div>
+              )}
+
+              {breed.energy_level && (
+                <div>
+                  <span className="text-primary font-semibold">
+                    Energy Level:
+                  </span>
+                  <p>{breed.energy_level}/5</p>
+                </div>
+              )}
+            </div>
+
+            <div>
+              {breed.temperament && (
+                <div>
+                  <span className="text-primary font-semibold">
+                    Temperament
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {breed.temperament.split(", ").map((temp, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 bg-primary text-white rounded-full text-sm"
+                      >
+                        {temp}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <h1 className="text-2xl font-bold text-primary">Beautiful Cat</h1>
+            <p>
+              This lovely cat doesn't have breed information available, but
+              isn't it gorgeous?
+            </p>
+          </div>
+        )}
       </div>
     </>
   );

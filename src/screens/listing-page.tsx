@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CatCard from "../components/cat-card";
 import Container from "../ui/container";
 import Pagination from "../components/pagination";
 import CatCardSkeleton from "../components/cat-card-skeleton";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { SortOrder } from "@/utils/types";
+import { Cat, SortOrder } from "@/utils/types";
 import SortDropdown from "@/components/sort-dropdown";
+import { useFetch } from "@/hooks/useFetch";
+
 const CATS_PER_PAGE = 15;
 
 const ListingPage = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [cats, setCats] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState<number>(() => {
     const pageParam = searchParams.get("page");
     const parsed = pageParam ? parseInt(pageParam, 10) : NaN;
@@ -27,41 +26,21 @@ const ListingPage = () => {
       ? sortParam
       : "RANDOM";
   });
+  const {
+    data: cats,
+    loading,
+    error,
+  } = useFetch<Cat[]>(
+    `https://api.thecatapi.com/v1/images/search?page=${
+      page - 1
+    }&limit=${CATS_PER_PAGE}&order=${sortOrder}&has_breeds=1`,
+    {
+      headers: { "x-api-key": process.env.NEXT_PUBLIC_CAT_API_KEY! },
+    },
+    [page, sortOrder]
+  );
 
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchCatData = async (page: number, sortOrder: SortOrder) => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        // page starts from 0 -> what can we do about this?
-        const res = await fetch(
-          `https://api.thecatapi.com/v1/images/search?page=${
-            page - 1
-          }&limit=${CATS_PER_PAGE}&api_key=${
-            process.env.NEXT_PUBLIC_CAT_API_KEY
-          }&order=${sortOrder}&has_breeds=1`
-        );
-        if (!res.ok) {
-          throw new Error("Failed to fetch cats");
-        }
-        const data = await res.json();
-        setCats(data);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to fetch cats. Please try again!"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCatData(page, sortOrder);
-  }, [page, sortOrder]);
 
   const updateUrl = (page: number, sort: SortOrder) => {
     const params = new URLSearchParams();
@@ -83,13 +62,6 @@ const ListingPage = () => {
   return (
     <Container>
       <div className="min-h-screen">
-        <header className="mb-4">
-          <h1 className="text-4xl font-bold px-4 py-6 text-center">
-            Cats Cats!{" "}
-            <span className="text-sm font-light italic">everywhere</span>
-          </h1>
-        </header>
-
         <SortDropdown value={sortOrder} onOptionChange={handleSortChange} />
 
         {error && (
@@ -98,13 +70,12 @@ const ListingPage = () => {
           </div>
         )}
         {loading ? (
-          // <LoadingSpinner />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: CATS_PER_PAGE }).map((_, idx) => (
               <CatCardSkeleton key={idx} />
             ))}
           </div>
-        ) : cats.length > 0 ? (
+        ) : cats && cats.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {cats?.map((cat) => (
@@ -114,12 +85,12 @@ const ListingPage = () => {
             <Pagination
               currentPage={page}
               onPageChange={handlePageChange}
-              hasNextPage={cats.length === CATS_PER_PAGE}
+              hasNextPage={cats?.length === CATS_PER_PAGE}
             />
           </>
         ) : (
           <div className="text-center py-4">
-            <p className="text-purple-500 text-lg">
+            <p className="text-primary text-lg">
               No cats found. Please try again later.
             </p>
           </div>

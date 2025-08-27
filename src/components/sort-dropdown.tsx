@@ -16,7 +16,7 @@ const SortDropdown = ({ value, onOptionChange }: SortDropdownProps) => {
         id="sort"
         value={value}
         onChange={(e) => onOptionChange(e.target.value as SortOrder)}
-        className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-purple-500"
+        className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-primary"
       >
         <option value="RANDOM">Random</option>
         <option value="ASC">Ascending</option>

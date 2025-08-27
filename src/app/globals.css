@@ -6,3 +6,8 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+@theme {
+  --color-primary: #7965c1;
+  --color-secondary: #483aa0;
+}

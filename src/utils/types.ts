@@ -15,5 +15,7 @@ export type Breed = {
 export type Cat = {
   id: string;
   url: string;
-  breeds: Breed[];
+  breeds?: Breed[];
+  width: number;
+  height: number;
 };
