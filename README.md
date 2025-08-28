@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐱 Cats Cats Everywhere
+
+A **Next.js + React** application built using the [Cat API](https://thecatapi.com/) to display adorable cats 🐾. This project demonstrates **frontend engineering practices**, including clean architecture, reusable components, hooks for state management, API route handling and TypeScript for type safety.
+
+## Features
+
+### Cat Listing Page
+
+- Displays **15 cats per page** with pagination (`Next` & `Previous` buttons).
+- Sorting functionality:
+  - Random
+  - Ascending
+  - Descending
+- Supports direct linking to a specific page with the selected sort order.
+- Skeleton loading states for a smoother UX.
+- Uses Next.js Image Optimization for lazy loading, responsive resizing, and error handling.
+- Placeholder images if a cat image fails to load.
+
+### Cat Details Page
+
+- Clicking on any cat image opens its **details page**.
+- Displays the following details:
+  - Name
+  - Description
+  - Origin
+  - Temperament
+  - Life Span
+  - Energy Level
+  - Weight
+
+### Additional Highlights
+
+- **Backend API routes in Next.js** used to **secure the API key** instead of exposing it on the client.
+- Strongly typed with **TypeScript**.
+- Shared **Header** and **Footer** across pages for consistent branding.
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   git clone https://github.com/your-username/cats-cats-everywhere.git
+   cd cats-cats-everywhere
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Configure environment variables
 
-## Learn More
+- A sample file env.template is already provided.
+- Copy it to your .env and add your Cat API key.
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm run dev
+   ```
