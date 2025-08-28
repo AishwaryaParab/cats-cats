@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import LoadingSpinner from "./loading-spinner";
+import LoadingSpinner from "../ui/loading-spinner";
 
 interface CatCardProps {
   id: string;

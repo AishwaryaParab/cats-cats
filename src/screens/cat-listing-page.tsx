@@ -1,16 +1,16 @@
 "use client";
 
-import CatCard from "../components/cat-card";
-import Container from "../ui/container";
-import Pagination from "../components/pagination";
-import CatCardSkeleton from "../components/cat-card-skeleton";
-import SortDropdown from "@/components/sort-dropdown";
+import CatCard from "../components/cats/cat-card";
+import Container from "../components/ui/container";
+import Pagination from "../components/cats/pagination";
+import CatCardSkeleton from "../components/cats/cat-card-skeleton";
+import SortDropdown from "@/components/cats/sort-dropdown";
 import { CATS_PER_PAGE } from "@/lib/constants";
 import { useCats } from "@/hooks/cats/useCats";
 
 const LIMIT = CATS_PER_PAGE;
 
-const ListingPage = () => {
+const CatListingPage = () => {
   const {
     data: cats,
     page,
@@ -27,16 +27,17 @@ const ListingPage = () => {
       <div className="min-h-screen">
         <SortDropdown value={sortOrder} onOptionChange={handleSortChange} />
 
-        {error && (
-          <div>
-            <p className="text-red-500">{error}</p>
-          </div>
-        )}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: CATS_PER_PAGE }).map((_, idx) => (
               <CatCardSkeleton key={idx} />
             ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-4">
+            <p className="text-red-500 text-lg">
+              {error || "Something went wrong. Please try again later."}
+            </p>
           </div>
         ) : cats && cats.length > 0 ? (
           <>
@@ -63,4 +64,4 @@ const ListingPage = () => {
   );
 };
 
-export default ListingPage;
+export default CatListingPage;

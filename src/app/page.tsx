@@ -1,5 +1,5 @@
-import ListingPage from "../screens/listing-page";
+import CatListingPage from "@/screens/cat-listing-page";
 
 export default function Home() {
-  return <ListingPage />;
+  return <CatListingPage />;
 }
