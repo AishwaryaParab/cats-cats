@@ -2,8 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["cdn2.thecatapi.com"],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.thecatapi.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.theimageapi.com",
+      },
       {
         protocol: "https",
         hostname: "*.media.tumblr.com",

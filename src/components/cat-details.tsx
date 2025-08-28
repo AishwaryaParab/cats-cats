@@ -1,4 +1,4 @@
-import { Cat } from "@/utils/types";
+import { Cat } from "@/lib/api/cats";
 import Image from "next/image";
 
 interface CatDetailsProps {
@@ -15,7 +15,7 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
             src={cat.url}
             alt="cat-image"
             fill
-            className="object-fill rounded-lg"
+            className="object-cover rounded-lg"
           />
         </div>
 

@@ -1,4 +1,4 @@
-import { SortOrder } from "@/utils/types";
+import { SortOrder } from "@/lib/api/cats";
 
 interface SortDropdownProps {
   value: SortOrder;

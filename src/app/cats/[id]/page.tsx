@@ -2,26 +2,16 @@
 
 import CatDetails from "@/components/cat-details";
 import LoadingSpinner from "@/components/loading-spinner";
-import { useFetch } from "@/hooks/useFetch";
 import Button from "@/ui/button";
 import Container from "@/ui/container";
-import { Cat } from "@/utils/types";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
+import { useCat } from "@/hooks/cats/useCat";
 
 const CatDetail = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
-
-  const {
-    data: cat,
-    loading,
-    error,
-  } = useFetch<Cat>(
-    `https://api.thecatapi.com/v1/images/${id}`,
-    { headers: { "x-api-key": process.env.NEXT_PUBLIC_CAT_API_KEY! } },
-    [id]
-  );
+  const { cat, loading, error } = useCat(id);
 
   return (
     <Container>

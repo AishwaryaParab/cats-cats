@@ -1,64 +1,26 @@
 "use client";
 
-import { useState } from "react";
 import CatCard from "../components/cat-card";
 import Container from "../ui/container";
 import Pagination from "../components/pagination";
 import CatCardSkeleton from "../components/cat-card-skeleton";
-import { usePathname, useRouter } from "next/navigation";
-import { Cat, SortOrder } from "@/utils/types";
 import SortDropdown from "@/components/sort-dropdown";
-import { useFetch } from "@/hooks/useFetch";
+import { CATS_PER_PAGE } from "@/lib/constants";
+import { useCats } from "@/hooks/cats/useCats";
 
-const CATS_PER_PAGE = 15;
+const LIMIT = CATS_PER_PAGE;
 
 const ListingPage = () => {
-  const pathname = usePathname();
-  const [page, setPage] = useState<number>(() => {
-    if (typeof window === "undefined") return 1;
-    const pageParam = new URLSearchParams(window.location.search).get("page");
-    const parsed = pageParam ? parseInt(pageParam, 10) : NaN;
-    return !isNaN(parsed) && parsed > 0 ? parsed : 1;
-  });
-  const [sortOrder, setSortOrder] = useState<SortOrder>(() => {
-    if (typeof window === "undefined") return "RANDOM";
-    const sortParam = new URLSearchParams(window.location.search).get("sort");
-    return sortParam === "RANDOM" || sortParam === "ASC" || sortParam === "DESC"
-      ? sortParam
-      : "RANDOM";
-  });
   const {
     data: cats,
+    page,
+    sortOrder,
+    pagination,
     loading,
     error,
-  } = useFetch<Cat[]>(
-    `https://api.thecatapi.com/v1/images/search?page=${
-      page - 1
-    }&limit=${CATS_PER_PAGE}&order=${sortOrder}&has_breeds=1`,
-    {
-      headers: { "x-api-key": process.env.NEXT_PUBLIC_CAT_API_KEY! },
-    },
-    [page, sortOrder]
-  );
-
-  const router = useRouter();
-
-  const updateUrl = (page: number, sort: SortOrder) => {
-    const params = new URLSearchParams();
-    params.set("page", page.toString());
-    params.set("sort", sort);
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    updateUrl(newPage, sortOrder);
-  };
-
-  const handleSortChange = (newSort: SortOrder) => {
-    setSortOrder(newSort);
-    updateUrl(page, newSort);
-  };
+    handlePageChange,
+    handleSortChange,
+  } = useCats({ limit: LIMIT, hasBreeds: 1 });
 
   return (
     <Container>

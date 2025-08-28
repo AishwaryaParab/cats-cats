@@ -38,7 +38,7 @@ export const useFetch = <T = any>(
           throw new Error("Oops!! Failed to fetch details, please try again!");
         }
         const json = await res.json();
-        setData(json);
+        setData(json.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
       } finally {
