@@ -25,9 +25,10 @@ export interface Cat {
 }
 
 export interface CatsApiPagination {
-  page: number;
-  limit: number;
-  hasMore: boolean;
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  pageLimit: number;
 }
 
 export interface CatsApiResponse {

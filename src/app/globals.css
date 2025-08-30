@@ -8,11 +8,11 @@ body {
   font-style: var(--font-geist-sans);
 }
 
-:root {
+/* :root {
   --background: #151618;
   --foreground: #ffffff;
   --accent: #25262b;
-}
+} */
 
 .dark {
   --background: #151618;

@@ -50,11 +50,16 @@ const CatListingPage = () => {
                 <CatCard key={cat.id} {...cat} />
               ))}
             </div>
-            <Pagination
-              currentPage={page}
-              onPageChange={handlePageChange}
-              hasNextPage={cats?.length === CATS_PER_PAGE}
-            />
+            {pagination && (
+              <Pagination
+                currentPage={page}
+                onPageChange={handlePageChange}
+                hasNextPage={
+                  page <= pagination?.totalPages &&
+                  cats?.length === CATS_PER_PAGE
+                }
+              />
+            )}
           </>
         ) : (
           <div className="text-center py-4">

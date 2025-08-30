@@ -34,11 +34,9 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    }
-
+    const storedTheme =
+      (localStorage.getItem(THEME_STORAGE_KEY) as Theme) || DEFAULT_THEME;
+    setTheme(storedTheme);
     setIsMounted(true);
   }, []);
 

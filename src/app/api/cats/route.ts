@@ -26,13 +26,19 @@ export async function GET(request: NextRequest) {
       throw new Error(`Fetching cats failed with status: ${res.status}`);
     }
     const cats = await res.json();
+
+    const totalCount = Number(res.headers.get("pagination-count") ?? 0);
+    const pageLimit = Number(res.headers.get("pagination-limit") ?? 1); // avoid divide by 0
+    const currentPage = Number(res.headers.get("pagination-page") ?? 0); // 0 accepted by the API
+
     return NextResponse.json({
       success: true,
       data: cats,
       pagination: {
-        page: parseInt(page),
-        limit: limit,
-        hasMore: cats.length === limit,
+        totalCount,
+        totalPages: Math.ceil(totalCount / pageLimit),
+        currentPage,
+        pageLimit,
       },
     });
   } catch (err) {
