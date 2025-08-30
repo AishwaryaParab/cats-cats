@@ -5,9 +5,40 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-style: var(--font-geist-sans);
+}
+
+:root {
+  --background: #151618;
+  --foreground: #ffffff;
+  --accent: #25262b;
+}
+
+.dark {
+  --background: #151618;
+  --foreground: #ffffff;
+  --accent: #25262b;
+}
+
+.light {
+  --background: #ffffff;
+  --foreground: #151618;
+  --accent: #e0e4f2;
 }
 
 @theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --color-primary: #7965c1;
   --color-secondary: #483aa0;
+}
+
+@layer base {
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body {
+    @apply transition-colors duration-300 bg-background text-foreground;
+  }
 }

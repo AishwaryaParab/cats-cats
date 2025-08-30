@@ -22,8 +22,8 @@ const SortDropdown = ({
         value={value}
         onChange={(e) => onOptionChange(e.target.value as SortOrder)}
         disabled={disabled}
-        className={`border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-primary ${
-          disabled ? "bg-gray-100 text-gray-400 cursor-not-allowed" : ""
+        className={`border border-accent rounded-md px-3 py-2 focus:outline-none focus:ring-primary ${
+          disabled ? "bg-accent text-gray-400 cursor-not-allowed" : ""
         }`}
         aria-label="Sort cats by order"
         aria-disabled={disabled}

@@ -5,7 +5,7 @@ import Container from "../ui/container";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-gray-100 text-center" aria-label="Site Footer">
+    <footer className="w-full bg-accent text-center" aria-label="Site Footer">
       <Container className="flex flex-col sm:flex-row gap-4 items-center justify-between">
         <p>
           Made with 💜 by{" "}
