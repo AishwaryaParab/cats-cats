@@ -18,21 +18,28 @@ const Pagination = ({
         <Button
           className="flex items-center gap-1"
           onClick={() => onPageChange(currentPage - 1)}
+          ariaLabel={`Go to previous page, page ${currentPage - 1}`}
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-5 h-5" aria-hidden="true" />
           <span>Previous</span>
         </Button>
       )}
 
-      <span>Page {currentPage}</span>
+      <span
+        aria-current="page"
+        aria-label={`Current page, page ${currentPage}`}
+      >
+        Page {currentPage}
+      </span>
 
       {hasNextPage && (
         <Button
           className="flex items-center gap-1"
           onClick={() => onPageChange(currentPage + 1)}
+          ariaLabel={`Go to next page, page ${currentPage + 1}`}
         >
           <span>Next</span>
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-5 h-5" aria-hidden="true" />
         </Button>
       )}
     </div>

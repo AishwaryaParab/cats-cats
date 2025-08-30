@@ -24,13 +24,16 @@ const CatDetailsPage = ({ id }: { id: string }) => {
   return (
     <Container>
       <Link href="/">
-        <Button className="mb-4 flex items-center gap-1">
-          <ArrowLeft className="w-5 h-5" />
+        <Button
+          className="mb-4 flex items-center gap-1"
+          ariaLabel="Go back to Home"
+        >
+          <ArrowLeft className="w-5 h-5" aria-hidden="true" />
           <span>Back to Home</span>
         </Button>
       </Link>
 
-      {loading && <LoadingSpinner />}
+      {loading && <LoadingSpinner ariaLabel="Loading cat details" />}
 
       {cat ? (
         <CatDetails cat={cat} />
