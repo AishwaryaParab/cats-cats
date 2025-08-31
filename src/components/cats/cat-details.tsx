@@ -1,4 +1,6 @@
+import { useFavourites } from "@/hooks/cats/useFavourites";
 import { Cat } from "@/lib/api/cats";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 
 interface CatDetailsProps {
@@ -7,6 +9,23 @@ interface CatDetailsProps {
 
 const CatDetails = ({ cat }: CatDetailsProps) => {
   const breed = cat?.breeds?.[0];
+  const { toggleFavourite, isFavourite } = useFavourites();
+  const isLiked = isFavourite(cat.id);
+
+  const handleLike = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      await toggleFavourite(id);
+    } catch (err) {
+      console.error("Error toggling favourite: ", err);
+    }
+  };
+
   return (
     <section className="flex flex-col lg:flex-row gap-4">
       <div className="relative lg:w-1/2 h-100 rounded-lg">
@@ -16,6 +35,25 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
           fill
           className="object-cover rounded-lg"
         />
+        <button
+          onClick={(e) => handleLike(e, cat.id)}
+          className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all duration-200 transform hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label={isLiked ? "Unlike this cat" : "Like this cat"}
+        >
+          <Heart
+            className={`w-5 h-5 transition-all duration-300 ${
+              isLiked
+                ? "fill-red-500 text-red-500 scale-110"
+                : "text-gray-600 hover:text-red-500"
+            }`}
+            style={{
+              filter: isLiked
+                ? "drop-shadow(0 0 8px rgba(239, 68, 68, 0.5))"
+                : "none",
+              animation: isLiked ? "heartBeat 0.6s ease-in-out" : "none",
+            }}
+          />
+        </button>
       </div>
 
       {breed ? (

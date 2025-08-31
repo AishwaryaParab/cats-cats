@@ -15,9 +15,10 @@ body {
 } */
 
 .dark {
-  --background: #151618;
+  /* --background: #151618; */
+  --background: #1d1d1e;
   --foreground: #ffffff;
-  --accent: #25262b;
+  --accent: #383839;
 }
 
 .light {
