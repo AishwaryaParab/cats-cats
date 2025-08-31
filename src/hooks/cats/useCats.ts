@@ -33,11 +33,11 @@ export const useCats = ({
   });
 
   const [sortOrder, setSortOrder] = useState<SortOrder>(() => {
-    if (typeof window === "undefined") return "RANDOM";
+    if (typeof window === "undefined") return "RAND";
     const sortParam = new URLSearchParams(window.location.search).get("sort");
-    return sortParam === "RANDOM" || sortParam === "ASC" || sortParam === "DESC"
+    return sortParam === "RAND" || sortParam === "ASC" || sortParam === "DESC"
       ? sortParam
-      : "RANDOM";
+      : "RAND";
   });
   const [data, setData] = useState<Cat[]>([]);
   const [pagination, setPagination] = useState<

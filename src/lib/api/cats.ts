@@ -2,7 +2,7 @@ import { CATS_PER_PAGE } from "../constants";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
-export type SortOrder = "RANDOM" | "ASC" | "DESC";
+export type SortOrder = "RAND" | "ASC" | "DESC";
 
 export interface Breed {
   name: string;
@@ -56,7 +56,7 @@ export const catsApi = {
     const {
       page = 1,
       limit = CATS_PER_PAGE,
-      order = "RANDOM",
+      order = "RAND",
       hasBreeds = 1,
     } = params;
 

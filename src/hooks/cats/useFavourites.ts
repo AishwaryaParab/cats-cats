@@ -9,8 +9,15 @@ import { useEffect } from "react";
 
 export const useFavourites = () => {
   const favourites = useAppSelector((state) => state.favourites);
-  const { items, favouriteImageIds, loading, error, initialized } = favourites;
+  const { items, favouriteImageIds, loading, error, initialized, pagination } =
+    favourites;
   const dispatch = useAppDispatch();
+  // const [page, setPage] = useState(() => {
+  //   if (typeof window === "undefined") return 1;
+  //   const pageParam = new URLSearchParams(window.location.search).get("page");
+  //   const parsed = pageParam ? parseInt(pageParam, 10) : NaN;
+  //   return !isNaN(parsed) && parsed > 0 ? parsed : 1;
+  // });
 
   useEffect(() => {
     if (!initialized && !loading) {
@@ -36,13 +43,14 @@ export const useFavourites = () => {
   console.log(favourites);
 
   return {
-    favourites,
+    items,
     favouriteImageIds,
     loading,
     error,
     initialized,
     toggleFavourite,
     isFavourite,
+    pagination,
     clearFavouritesError,
     refetchFavourites: () => dispatch(fetchFavourites()),
   };

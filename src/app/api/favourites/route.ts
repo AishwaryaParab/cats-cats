@@ -1,3 +1,4 @@
+// import { FAVS_PER_PAGE } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 const CAT_API_BASE_URL = process.env.CAT_API_BASE_URL!;
@@ -5,6 +6,14 @@ const CAT_API_KEY = process.env.CAT_API_KEY!;
 
 export async function GET(request: NextRequest) {
   try {
+    // const { searchParams } = new URL(request.url);
+    // const page = searchParams.get("page") || "1";
+    // const limitParam = searchParams.get("limit");
+    // const limit = limitParam ? parseInt(limitParam, 10) : FAVS_PER_PAGE;
+
+    // const url = `${CAT_API_BASE_URL}/favourites?limit=${limit}&page=${
+    //   parseInt(page) - 1
+    // }`;
     const url = `${CAT_API_BASE_URL}/favourites`;
     const headers: HeadersInit = {
       "x-api-key": CAT_API_KEY,
@@ -16,9 +25,19 @@ export async function GET(request: NextRequest) {
     }
     const favourites = await res.json();
 
+    const totalCount = Number(res.headers.get("pagination-count") ?? 0);
+    const pageLimit = Number(res.headers.get("pagination-limit") ?? 1); // avoid divide by 0
+    const currentPage = Number(res.headers.get("pagination-page") ?? 0); // 0 accepted by the API
+
     return NextResponse.json({
       success: true,
       data: favourites,
+      pagination: {
+        totalCount,
+        totalPages: Math.ceil(totalCount / pageLimit),
+        currentPage,
+        pageLimit,
+      },
     });
   } catch (err) {
     console.error("Error fetching favourites: ", err);

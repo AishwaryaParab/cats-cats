@@ -1,10 +1,21 @@
+import { catsApi } from "@/lib/api/cats";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Favourite {
   id: number;
   image_id: string;
-  image_url: string;
+  image: {
+    id: string;
+    url: string;
+  };
   created_at: string;
+}
+
+interface FavouritesPagination {
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+  pageLimit: number;
 }
 
 interface FavouritesState {
@@ -12,7 +23,8 @@ interface FavouritesState {
   favouriteImageIds: string[];
   loading: boolean;
   error: string | null;
-  initialized: boolean; // why this?
+  initialized: boolean;
+  pagination: FavouritesPagination | null;
 }
 
 const initialState: FavouritesState = {
@@ -21,9 +33,15 @@ const initialState: FavouritesState = {
   loading: false,
   error: null,
   initialized: false,
+  pagination: null,
 };
 
-export const fetchFavourites = createAsyncThunk(
+interface FetchFavouritesResponse {
+  favourites: Favourite[];
+  pagination: FavouritesPagination;
+}
+
+export const fetchFavourites = createAsyncThunk<FetchFavouritesResponse>(
   "/favourites/fetchFavourites",
   async (_, { rejectWithValue }) => {
     try {
@@ -34,7 +52,7 @@ export const fetchFavourites = createAsyncThunk(
         throw new Error(data.message || "Failed to fetch favorites");
       }
 
-      return data.data;
+      return { favourites: data.data, pagination: data.pagination };
     } catch (err) {
       return rejectWithValue(
         err instanceof Error ? err.message : "Failed to fetch favorites"
@@ -60,7 +78,15 @@ export const addFavourite = createAsyncThunk(
         throw new Error(data.message || "Failed to add favorite");
       }
 
-      return { ...data.data, image_id: imageId };
+      const favouriteId = data.data.id;
+      const imgData = await catsApi.fetchCatById(imageId);
+
+      return {
+        id: favouriteId,
+        image_id: imageId,
+        image: { id: imageId, url: imgData.url },
+        created_at: new Date().toISOString(),
+      };
     } catch (err) {
       return rejectWithValue(
         err instanceof Error ? err.message : "Failed to add favorite"
@@ -105,11 +131,14 @@ const favouritesSlice = createSlice({
       })
       .addCase(
         fetchFavourites.fulfilled,
-        (state, action: PayloadAction<Favourite[]>) => {
+        (state, action: PayloadAction<FetchFavouritesResponse>) => {
           state.loading = false;
-          state.items = action.payload;
-          state.favouriteImageIds = action.payload.map((fav) => fav.image_id);
+          state.items = action.payload.favourites;
+          state.favouriteImageIds = action.payload.favourites.map(
+            (fav) => fav.image_id
+          );
           state.initialized = true;
+          state.pagination = action.payload.pagination;
         }
       )
       .addCase(fetchFavourites.rejected, (state, action) => {

@@ -28,7 +28,7 @@ const SortDropdown = ({
         aria-label="Sort cats by order"
         aria-disabled={disabled}
       >
-        <option value="RANDOM">Random</option>
+        <option value="RAND">Random</option>
         <option value="ASC">Ascending</option>
         <option value="DESC">Descending</option>
       </select>

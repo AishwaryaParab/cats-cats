@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const page = searchParams.get("page") || "1";
-    const sortOrder = searchParams.get("sort") || "RANDOM";
+    const sortOrder = searchParams.get("sort") || "RAND";
     const limitParam = searchParams.get("limit");
     const limit = limitParam ? parseInt(limitParam, 10) : CATS_PER_PAGE;
     const hasBreeds = searchParams.get("has_breeds") || "0";
