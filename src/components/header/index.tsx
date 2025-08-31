@@ -6,7 +6,7 @@ import { Heart } from "lucide-react";
 const Header = () => {
   return (
     <header>
-      <Container className="flex justify-between items-center">
+      <Container className="flex flex-col sm:flex-row justify-between items-center">
         <h1 className="text-4xl font-bold py-6 text-center text-primary">
           Cats Cats!{" "}
           <span className="text-sm font-light italic">everywhere</span>

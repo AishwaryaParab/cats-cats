@@ -12,10 +12,13 @@ export async function GET(request: NextRequest) {
     const limitParam = searchParams.get("limit");
     const limit = limitParam ? parseInt(limitParam, 10) : CATS_PER_PAGE;
     const hasBreeds = searchParams.get("has_breeds") || "0";
+    const breed_ids = searchParams.get("breed_ids") || "";
 
     let url = `${CAT_API_BASE_URL}/images/search?limit=${limit}&page=${
       parseInt(page) - 1
-    }&order=${sortOrder}&has_breeds=${parseInt(hasBreeds)}`;
+    }&order=${sortOrder}&has_breeds=${parseInt(
+      hasBreeds
+    )}&breed_ids=${breed_ids}`;
 
     const headers: HeadersInit = {
       "x-api-key": CAT_API_KEY,

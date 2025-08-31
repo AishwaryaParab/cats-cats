@@ -8,6 +8,7 @@ import SortDropdown from "@/components/cats/sort-dropdown";
 import { CATS_PER_PAGE } from "@/lib/constants";
 import { useCats } from "@/hooks/cats/useCats";
 import { useFavourites } from "@/hooks/cats/useFavourites";
+import MultiBreedsDropdown from "@/components/cats/multi-breeds-dropdown";
 
 const LIMIT = CATS_PER_PAGE;
 
@@ -21,6 +22,10 @@ const CatListingPage = () => {
     error,
     handlePageChange,
     handleSortChange,
+    breeds,
+    breedsLoading,
+    selectedBreeds,
+    handleBreedsChange,
   } = useCats({ limit: LIMIT, hasBreeds: 1 });
   const { toggleFavourite, isFavourite } = useFavourites();
 
@@ -32,7 +37,6 @@ const CatListingPage = () => {
     e.stopPropagation();
 
     try {
-      console.log(id);
       await toggleFavourite(id);
     } catch (err) {
       console.error("Error toggling favourite: ", err);
@@ -46,6 +50,13 @@ const CatListingPage = () => {
           value={sortOrder}
           onOptionChange={handleSortChange}
           disabled={loading}
+        />
+
+        <MultiBreedsDropdown
+          breeds={breeds}
+          selectedBreeds={selectedBreeds}
+          onBreedsChange={handleBreedsChange}
+          loading={breedsLoading}
         />
 
         {loading ? (

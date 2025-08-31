@@ -1,4 +1,10 @@
-import { Cat, catsApi, CatsApiResponse, SortOrder } from "@/lib/api/cats";
+import {
+  BreedData,
+  Cat,
+  catsApi,
+  CatsApiResponse,
+  SortOrder,
+} from "@/lib/api/cats";
 import { CATS_PER_PAGE } from "@/lib/constants";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,6 +23,11 @@ interface UseCatsResult {
   sortOrder: SortOrder;
   handlePageChange: (page: number) => void;
   handleSortChange: (sortOrder: SortOrder) => void;
+  breeds: BreedData[];
+  breedsLoading: boolean;
+  breedsError: string | null;
+  selectedBreeds: string[];
+  handleBreedsChange: (breedIds: string[]) => void;
 }
 
 export const useCats = ({
@@ -45,6 +56,61 @@ export const useCats = ({
   >(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [breeds, setBreeds] = useState<BreedData[]>([]);
+  const [breedsLoading, setBreedsLoading] = useState(true);
+  const [breedsError, setBreedsError] = useState<string | null>(null);
+  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchBreeds = async () => {
+      setBreedsLoading(true);
+      setError(null);
+
+      try {
+        const res = await catsApi.fetchBreeds();
+        setBreeds(res.data);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Something went wrong! Please try again later."
+        );
+      } finally {
+        setBreedsLoading(false);
+      }
+    };
+
+    fetchBreeds();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await catsApi.fetchCats({
+          page,
+          order: sortOrder,
+          limit,
+          hasBreeds,
+          breed_ids: selectedBreeds.join(","),
+        });
+        setData(res.data);
+        setPagination(res.pagination);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Something went wrong! Please try again later."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [page, sortOrder, selectedBreeds]);
 
   const updateUrl = (page: number, sort: SortOrder) => {
     const params = new URLSearchParams();
@@ -63,33 +129,9 @@ export const useCats = ({
     updateUrl(page, newSort);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const res = await catsApi.fetchCats({
-          page,
-          order: sortOrder,
-          limit,
-          hasBreeds,
-        });
-        setData(res.data);
-        setPagination(res.pagination);
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Something went wrong! Please try again later."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [page, sortOrder]);
+  const handleBreedsChange = (newBreedIds: string[]) => {
+    setSelectedBreeds(newBreedIds);
+  };
 
   return {
     data,
@@ -100,5 +142,10 @@ export const useCats = ({
     error,
     handlePageChange,
     handleSortChange,
+    breeds,
+    breedsLoading,
+    breedsError,
+    selectedBreeds,
+    handleBreedsChange,
   };
 };

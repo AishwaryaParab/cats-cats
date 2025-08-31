@@ -40,8 +40,6 @@ export const useFavourites = () => {
 
   const clearFavouritesError = () => dispatch(clearError());
 
-  console.log(favourites);
-
   return {
     items,
     favouriteImageIds,

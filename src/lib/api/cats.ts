@@ -49,6 +49,18 @@ export interface FetchCatsParams {
   limit?: number;
   order?: SortOrder;
   hasBreeds?: 0 | 1;
+  breed_ids?: string;
+}
+
+export interface BreedData {
+  id: string;
+  name: string;
+}
+
+export interface BreedsApiResponse {
+  success: boolean;
+  data: BreedData[];
+  message?: string;
 }
 
 export const catsApi = {
@@ -58,6 +70,7 @@ export const catsApi = {
       limit = CATS_PER_PAGE,
       order = "RAND",
       hasBreeds = 1,
+      breed_ids = "",
     } = params;
 
     const qs = new URLSearchParams({
@@ -65,6 +78,7 @@ export const catsApi = {
       limit: String(limit),
       sort: order,
       has_breeds: String(hasBreeds),
+      breed_ids: String(breed_ids),
     });
     try {
       const res = await fetch(`${API_BASE_URL}/cats?${qs.toString()}`);
@@ -110,6 +124,28 @@ export const catsApi = {
         err instanceof Error
           ? err.message
           : "Unexpected error while fetching cat";
+      throw new Error(message);
+    }
+  },
+  async fetchBreeds(): Promise<BreedsApiResponse> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/cats/breeds`);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch breeds. Please try again!");
+      }
+      const json = (await res.json()) as BreedsApiResponse;
+
+      if (!json.success) {
+        throw new Error(json.message || "Failed to fetch breeds");
+      }
+
+      return json;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Unexpected error while fetching breeds";
       throw new Error(message);
     }
   },

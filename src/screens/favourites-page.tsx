@@ -19,7 +19,6 @@ const FavouritesPage = () => {
     e.stopPropagation();
 
     try {
-      console.log(id);
       await toggleFavourite(id);
     } catch (err) {
       console.error("Error toggling favourite: ", err);

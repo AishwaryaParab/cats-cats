@@ -13,7 +13,7 @@ const SortDropdown = ({
 }: SortDropdownProps) => {
   return (
     <div className="flex items-center gap-2 my-4">
-      <label htmlFor="sort" className="font-medium text-lg">
+      <label htmlFor="sort" className="font-medium">
         Sort by:
       </label>
 
