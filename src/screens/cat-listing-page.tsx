@@ -7,6 +7,7 @@ import CatCardSkeleton from "../components/cats/cat-card-skeleton";
 import SortDropdown from "@/components/cats/sort-dropdown";
 import { CATS_PER_PAGE } from "@/lib/constants";
 import { useCats } from "@/hooks/cats/useCats";
+import { useFavourites } from "@/hooks/cats/useFavourites";
 
 const LIMIT = CATS_PER_PAGE;
 
@@ -21,6 +22,22 @@ const CatListingPage = () => {
     handlePageChange,
     handleSortChange,
   } = useCats({ limit: LIMIT, hasBreeds: 1 });
+  const { toggleFavourite, isFavourite } = useFavourites();
+
+  const handleLike = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      console.log(id);
+      await toggleFavourite(id);
+    } catch (err) {
+      console.error("Error toggling favourite: ", err);
+    }
+  };
 
   return (
     <Container>
@@ -47,7 +64,12 @@ const CatListingPage = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {cats?.map((cat) => (
-                <CatCard key={cat.id} {...cat} />
+                <CatCard
+                  key={cat.id}
+                  {...cat}
+                  isLiked={isFavourite(cat.id)}
+                  onHeartClick={handleLike}
+                />
               ))}
             </div>
             {pagination && (
