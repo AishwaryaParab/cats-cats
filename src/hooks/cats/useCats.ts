@@ -6,7 +6,7 @@ import {
   SortOrder,
 } from "@/lib/api/cats";
 import { CATS_PER_PAGE } from "@/lib/constants";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface UseCatsOptions {
@@ -36,20 +36,12 @@ export const useCats = ({
 }: UseCatsOptions): UseCatsResult => {
   const router = useRouter();
   const pathname = usePathname();
-  const [page, setPage] = useState<number>(() => {
-    if (typeof window === "undefined") return 1;
-    const pageParam = new URLSearchParams(window.location.search).get("page");
-    const parsed = pageParam ? parseInt(pageParam, 10) : NaN;
-    return !isNaN(parsed) && parsed > 0 ? parsed : 1;
-  });
+  const searchParams = useSearchParams();
 
-  const [sortOrder, setSortOrder] = useState<SortOrder>(() => {
-    if (typeof window === "undefined") return "RAND";
-    const sortParam = new URLSearchParams(window.location.search).get("sort");
-    return sortParam === "RAND" || sortParam === "ASC" || sortParam === "DESC"
-      ? sortParam
-      : "RAND";
-  });
+  const [page, setPage] = useState<number>(1);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("RAND");
+  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
+
   const [data, setData] = useState<Cat[]>([]);
   const [pagination, setPagination] = useState<
     CatsApiResponse["pagination"] | null
@@ -59,7 +51,23 @@ export const useCats = ({
   const [breeds, setBreeds] = useState<BreedData[]>([]);
   const [breedsLoading, setBreedsLoading] = useState(true);
   const [breedsError, setBreedsError] = useState<string | null>(null);
-  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
+
+  // --- Sync state with URL whenever it changes ---
+  useEffect(() => {
+    const pageParam = searchParams.get("page");
+    const parsedPage = pageParam ? parseInt(pageParam, 10) : NaN;
+    setPage(!isNaN(parsedPage) && parsedPage > 0 ? parsedPage : 1);
+
+    const sortParam = searchParams.get("sort");
+    setSortOrder(
+      sortParam === "RAND" || sortParam === "ASC" || sortParam === "DESC"
+        ? sortParam
+        : "RAND"
+    );
+
+    const breedsParam = searchParams.get("breeds");
+    setSelectedBreeds(breedsParam ? breedsParam.split(",") : []);
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -110,27 +118,33 @@ export const useCats = ({
     };
 
     fetchData();
-  }, [page, sortOrder, selectedBreeds]);
+  }, [page, sortOrder, selectedBreeds, limit, hasBreeds]);
 
-  const updateUrl = (page: number, sort: SortOrder) => {
+  const updateUrl = (page: number, sort: SortOrder, breeds: string[]) => {
     const params = new URLSearchParams();
     params.set("page", page.toString());
     params.set("sort", sort);
+    if (breeds.length > 0) {
+      params.set("breeds", breeds.join(","));
+    }
     router.push(`${pathname}?${params.toString()}`);
   };
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    updateUrl(newPage, sortOrder);
+    updateUrl(newPage, sortOrder, selectedBreeds);
   };
 
   const handleSortChange = (newSort: SortOrder) => {
     setSortOrder(newSort);
-    updateUrl(page, newSort);
+    updateUrl(page, newSort, selectedBreeds);
   };
 
   const handleBreedsChange = (newBreedIds: string[]) => {
     setSelectedBreeds(newBreedIds);
+    // Reset page to 1 when filters change
+    setPage(1);
+    updateUrl(1, sortOrder, newBreedIds);
   };
 
   return {

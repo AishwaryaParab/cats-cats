@@ -7,10 +7,13 @@ const Header = () => {
   return (
     <header>
       <Container className="flex flex-col sm:flex-row justify-between items-center">
-        <h1 className="text-4xl font-bold py-6 text-center text-primary">
+        <Link
+          href="/"
+          className="text-4xl font-bold py-6 text-center text-primary cursor-pointer"
+        >
           Cats Cats!{" "}
           <span className="text-sm font-light italic">everywhere</span>
-        </h1>
+        </Link>
 
         <div className="flex gap-4 items-center">
           <Link

@@ -5,15 +5,18 @@ import { store } from "@/store";
 import { Provider } from "react-redux";
 import Header from "../header";
 import Footer from "../footer";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
+import LoadingSpinner from "../ui/loading-spinner";
 
 const LayoutContent = ({ children }: { children: ReactNode }) => {
   return (
     <Provider store={store}>
       <ThemeProvider>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </Suspense>
       </ThemeProvider>
     </Provider>
   );
