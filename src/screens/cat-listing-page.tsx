@@ -10,6 +10,7 @@ import { useCats } from "@/hooks/cats/useCats";
 import { useFavourites } from "@/hooks/cats/useFavourites";
 import MultiBreedsDropdown from "@/components/cats/multi-breeds-dropdown";
 import CompareFloatingButton from "@/components/compare/compare-floating-button";
+import StatusMessage from "@/components/ui/status-message";
 
 const LIMIT = CATS_PER_PAGE;
 
@@ -67,11 +68,10 @@ const CatListingPage = () => {
             ))}
           </div>
         ) : error ? (
-          <div className="text-center py-4">
-            <p className="text-red-500 text-lg">
-              {error || "Something went wrong. Please try again later."}
-            </p>
-          </div>
+          <StatusMessage
+            message={error || "Something went wrong. Please try again later."}
+            color="text-red-500"
+          />
         ) : cats && cats.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -96,11 +96,10 @@ const CatListingPage = () => {
             )}
           </>
         ) : (
-          <div className="text-center py-4">
-            <p className="text-primary text-lg">
-              No cats found. Please try again later.
-            </p>
-          </div>
+          <StatusMessage
+            message="No cats found. Please try again later."
+            color="text-primary"
+          />
         )}
 
         <CompareFloatingButton />

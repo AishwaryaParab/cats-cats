@@ -2,8 +2,8 @@
 
 import CatCard from "@/components/cats/cat-card";
 import CatCardSkeleton from "@/components/cats/cat-card-skeleton";
-// import Pagination from "@/components/cats/pagination";
 import Container from "@/components/ui/container";
+import StatusMessage from "@/components/ui/status-message";
 import { useFavourites } from "@/hooks/cats/useFavourites";
 import { CATS_PER_PAGE } from "@/lib/constants";
 
@@ -35,11 +35,10 @@ const FavouritesPage = () => {
             ))}
           </div>
         ) : error ? (
-          <div className="text-center py-4">
-            <p className="text-red-500 text-lg">
-              {error || "Something went wrong. Please try again later."}
-            </p>
-          </div>
+          <StatusMessage
+            message={error || "Something went wrong. Please try again later."}
+            color="text-red-500"
+          />
         ) : items && items.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -53,23 +52,12 @@ const FavouritesPage = () => {
                 />
               ))}
             </div>
-            {/* {pagination && (
-              <Pagination
-                currentPage={page}
-                onPageChange={handlePageChange}
-                hasNextPage={
-                  page <= pagination?.totalPages &&
-                  cats?.length === CATS_PER_PAGE
-                }
-              />
-            )} */}
           </>
         ) : (
-          <div className="text-center py-4">
-            <p className="text-primary text-lg">
-              No cats found. Please try again later.
-            </p>
-          </div>
+          <StatusMessage
+            message={"No cats found. Please try again later."}
+            color="text-primary"
+          />
         )}
       </section>
     </Container>

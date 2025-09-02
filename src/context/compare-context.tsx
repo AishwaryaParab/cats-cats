@@ -1,3 +1,4 @@
+import { MAX_COMPARE_COUNT } from "@/lib/constants";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface CompareItem {
@@ -24,7 +25,7 @@ export const CompareProvider = ({ children }: { children: ReactNode }) => {
   const [compareItems, setCompareItems] = useState<CompareItem[]>([]);
 
   const addToCompare = (item: CompareItem): boolean => {
-    if (compareItems.length > 3) return false;
+    if (compareItems.length > MAX_COMPARE_COUNT) return false;
 
     if (
       compareItems.some((compareItem) => compareItem.breedId === item.breedId)
@@ -47,7 +48,7 @@ export const CompareProvider = ({ children }: { children: ReactNode }) => {
     return compareItems.some((item) => item.breedId === breedId);
   };
 
-  const canAddMore = compareItems.length < 3;
+  const canAddMore = compareItems.length < MAX_COMPARE_COUNT;
 
   return (
     <CompareContext.Provider

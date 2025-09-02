@@ -14,8 +14,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cats Cats everywhere!",
-  description: "An assignment generated with Next and React",
+  title: "Cats Cats Everywhere 🐾 | Explore Cat Breeds & More",
+  description:
+    "Discover cat breeds, view adorable images, save favourites and compare cat breeds — all powered by The Cat API. Explore the world of cats like never before!",
+  keywords: [
+    "cats",
+    "cat breeds",
+    "cute cats",
+    "cat images",
+    "favourite cats",
+    "The Cat API",
+    "cat facts",
+    "pet lovers",
+    "adopt a cat",
+  ],
 };
 
 export default function RootLayout({

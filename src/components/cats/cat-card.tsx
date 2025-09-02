@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import LoadingSpinner from "../ui/loading-spinner";
 import { Breed } from "@/lib/api/cats";
-import { Check, Heart } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Heart } from "lucide-react";
 import { useCompare } from "@/context/compare-context";
 
 interface CatCardProps {
@@ -43,12 +43,8 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
 
   return (
     <div className="flex justify-center">
-      <Link
-        href={`/cats/${id}`}
-        className="cursor-pointer"
-        aria-label={`View details about ${breed?.name || "this cat"}`}
-      >
-        <div className="relative w-[250px] h-[250px] bg-gray-100 rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+      <div className="bg-foreground text-background rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+        <div className="relative w-[250px] h-[250px] bg-gray-100 rounded-lg">
           {!imageLoaded && (
             <div className="absolute inset-0 flex justify-center items-center">
               <LoadingSpinner />
@@ -59,7 +55,7 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
             src={imgSrc}
             alt="cat-image"
             fill
-            className={`object-cover rounded-lg transition-opacity ${
+            className={`object-cover rounded-t-lg transition-opacity ${
               imageLoaded ? "opacity-100" : "opacity-100"
             }`}
             sizes="250px"
@@ -67,6 +63,7 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
             onLoad={() => setImageLoaded(true)}
           />
 
+          {/* Favourites Button */}
           <button
             onClick={(e) => onHeartClick(e, id)}
             className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white transition-all duration-200 transform hover:scale-110 active:scale-95 cursor-pointer"
@@ -121,8 +118,28 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
             </button>
           )}
         </div>
-        <p>{breed?.name}</p>
-      </Link>
+        <div className="mt-2 px-2">
+          <h3 className="text-lg font-semibold text-center">
+            {breed?.name || "Unknown Breed"}
+          </h3>
+        </div>
+
+        <div className="flex justify-center">
+          <Link href={`/cats/${id}`}>
+            <button
+              className="px-6 py-2 font-medium hover:underline cursor-pointer"
+              aria-label={`View detailed information about ${
+                breed?.name || "this cat"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span>View Details</span>
+                <ArrowRight className="w-5 h-5" />
+              </div>
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
