@@ -19,12 +19,20 @@ body {
   --background: #1d1d1e;
   --foreground: #ffffff;
   --accent: #383839;
+  --card: #2a2a2b;
+  --card-foreground: #ffffff;
+  --border: #383839;
+  --muted: #9ca3af;
 }
 
 .light {
   --background: #ffffff;
   --foreground: #151618;
   --accent: #e0e4f2;
+  --card: #ffffff;
+  --card-foreground: #151618;
+  --border: #e5e7eb;
+  --muted: #6b7280;
 }
 
 @theme {
@@ -33,6 +41,10 @@ body {
   --color-accent: var(--accent);
   --color-primary: #7965c1;
   --color-secondary: #483aa0;
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
 }
 
 @layer base {

@@ -9,6 +9,7 @@ import { CATS_PER_PAGE } from "@/lib/constants";
 import { useCats } from "@/hooks/cats/useCats";
 import { useFavourites } from "@/hooks/cats/useFavourites";
 import MultiBreedsDropdown from "@/components/cats/multi-breeds-dropdown";
+import CompareFloatingButton from "@/components/compare/compare-floating-button";
 
 const LIMIT = CATS_PER_PAGE;
 
@@ -101,6 +102,8 @@ const CatListingPage = () => {
             </p>
           </div>
         )}
+
+        <CompareFloatingButton />
       </section>
     </Container>
   );

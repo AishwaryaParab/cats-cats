@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import LoadingSpinner from "../ui/loading-spinner";
 import { Breed } from "@/lib/api/cats";
-import { Heart } from "lucide-react";
+import { Check, Heart } from "lucide-react";
+import { useCompare } from "@/context/compare-context";
 
 interface CatCardProps {
   id: string;
@@ -18,7 +19,27 @@ interface CatCardProps {
 const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
   const [imgSrc, setImageSrc] = useState(url || "/images/cat-placeholder.png");
   const [imageLoaded, setImageLoaded] = useState(false);
-  const breed = breeds ? breeds[0] : null;
+  const breed: Breed | null = breeds ? breeds[0] : null;
+  const { addToCompare, removeFromCompare, isInCompare, canAddMore } =
+    useCompare();
+
+  const handleCompareToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (breed) {
+      if (isInCompare(breed.id)) {
+        removeFromCompare(breed?.id);
+      } else if (canAddMore && breed) {
+        addToCompare({
+          id,
+          breedId: breed.id,
+          breedName: breed.name,
+          imageUrl: url,
+        });
+      }
+    }
+  };
 
   return (
     <div className="flex justify-center">
@@ -37,8 +58,6 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
             key={id}
             src={imgSrc}
             alt="cat-image"
-            // width={cat.width}
-            // height={cat.height}
             fill
             className={`object-cover rounded-lg transition-opacity ${
               imageLoaded ? "opacity-100" : "opacity-100"
@@ -67,6 +86,40 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
               }}
             />
           </button>
+
+          {/* Compare Checkbox */}
+          {breed && (
+            <button
+              onClick={handleCompareToggle}
+              disabled={!canAddMore || isInCompare(breed.id)}
+              className={`absolute top-4 left-4 p-2 rounded-full backdrop-blur-sm transition-all duration-200 transform hover:scale-110 active:scale-95 ${
+                isInCompare(breed.id)
+                  ? "bg-blue-500 text-white"
+                  : canAddMore || isInCompare(breed.id)
+                  ? "bg-white/90 hover:bg-white text-gray-700 hover:text-blue-500"
+                  : "bg-gray-300/60 cursor-not-allowed text-gray-400"
+              }`}
+              aria-label={
+                isInCompare(breed.id)
+                  ? `Remove ${breed.name} from comparison`
+                  : `Add ${breed.name} to comparison`
+              }
+            >
+              <div className="relative w-5 h-5">
+                {isInCompare(breed.id) ? (
+                  <Check className="w-5 h-5 animate-in zoom-in-50 duration-200" />
+                ) : (
+                  <div
+                    className={`w-5 h-5 border-2 rounded transition-colors ${
+                      canAddMore || isInCompare(breed.id)
+                        ? "border-gray-400"
+                        : "border-gray-300"
+                    }`}
+                  />
+                )}
+              </div>
+            </button>
+          )}
         </div>
         <p>{breed?.name}</p>
       </Link>

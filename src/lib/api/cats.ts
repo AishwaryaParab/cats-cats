@@ -5,6 +5,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
 export type SortOrder = "RAND" | "ASC" | "DESC";
 
 export interface Breed {
+  id: string;
   name: string;
   temperament: string;
   origin: string;
@@ -60,6 +61,12 @@ export interface BreedData {
 export interface BreedsApiResponse {
   success: boolean;
   data: BreedData[];
+  message?: string;
+}
+
+export interface BreedDetailsApiResponse {
+  success: boolean;
+  data: Breed;
   message?: string;
 }
 
@@ -146,6 +153,32 @@ export const catsApi = {
         err instanceof Error
           ? err.message
           : "Unexpected error while fetching breeds";
+      throw new Error(message);
+    }
+  },
+  async fetchBreedById(id: string): Promise<Breed> {
+    if (!id) throw new Error("Breed ID is required.");
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/cats/breeds/${id}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch breed details. Please try again!");
+      }
+
+      const json = (await res.json()) as BreedDetailsApiResponse;
+
+      if (!json.success) {
+        throw new Error(
+          json.message || "Failed to fetch breed details. Please try again!"
+        );
+      }
+
+      return json.data;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Unexpected error while fetching cat";
       throw new Error(message);
     }
   },

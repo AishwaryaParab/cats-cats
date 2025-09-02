@@ -7,17 +7,20 @@ import Header from "../header";
 import Footer from "../footer";
 import { ReactNode, Suspense } from "react";
 import LoadingSpinner from "../ui/loading-spinner";
+import { CompareProvider } from "@/context/compare-context";
 
 const LayoutContent = ({ children }: { children: ReactNode }) => {
   return (
     <Provider store={store}>
-      <ThemeProvider>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </Suspense>
-      </ThemeProvider>
+      <CompareProvider>
+        <ThemeProvider>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </Suspense>
+        </ThemeProvider>
+      </CompareProvider>
     </Provider>
   );
 };
