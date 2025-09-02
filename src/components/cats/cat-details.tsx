@@ -3,6 +3,7 @@ import { Cat } from "@/lib/api/cats";
 import { ArrowLeft, CatIcon, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import CatCharacteristics from "./cat-characteristics";
 
 interface CatDetailsProps {
   cat: Cat;
@@ -45,7 +46,10 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
             More about {breed?.name || "this cat"}
           </h1>
         </div>
-        <p className="text-foreground mt-2">Get more details about this cat</p>
+        <p className="text-foreground mt-2">
+          Learn about {breed?.name || "this cat"}’s unique traits, personality,
+          and care needs. Perfect for curious cat lovers and future pet parents!
+        </p>
       </div>
 
       <section className="flex flex-col lg:flex-row gap-4">
@@ -152,6 +156,8 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
           </div>
         )}
       </section>
+
+      {breed && <CatCharacteristics breed={breed} />}
     </>
   );
 };

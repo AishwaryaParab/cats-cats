@@ -47,7 +47,7 @@ const CompareFloatingButton = () => {
 
         <button
           onClick={handleClear}
-          className="p-2 text-gray-400 hover:text-red-500 transition-colors rounded-full hover:bg-red-50"
+          className="p-2 text-gray-400 hover:text-red-500 transition-colors rounded-full hover:bg-red-50 cursor-pointer"
           aria-label="Clear all comparisons"
         >
           <X className="w-4 h-4" />
@@ -56,7 +56,7 @@ const CompareFloatingButton = () => {
         <button
           onClick={handleCompare}
           disabled={compareItems.length < 2}
-          className={`flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+          className={`flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer ${
             compareItems.length >= 2
               ? "bg-primary hover:bg-secondary text-white shadow-lg hover:shadow-xl"
               : "bg-gray-100 text-gray-400 cursor-not-allowed"

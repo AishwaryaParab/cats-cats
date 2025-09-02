@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import LoadingSpinner from "../ui/loading-spinner";
 import { Breed } from "@/lib/api/cats";
-import { ArrowLeft, ArrowRight, Check, Heart } from "lucide-react";
+import { ArrowRight, Check, Heart } from "lucide-react";
 import { useCompare } from "@/context/compare-context";
 
 interface CatCardProps {

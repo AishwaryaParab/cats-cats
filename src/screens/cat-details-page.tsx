@@ -1,8 +1,8 @@
 "use client";
 
 import CatDetails from "@/components/cats/cat-details";
+import CatDetailsSkeleton from "@/components/cats/cat-details-skeleton";
 import Container from "@/components/ui/container";
-import LoadingSpinner from "@/components/ui/loading-spinner";
 import StatusMessage from "@/components/ui/status-message";
 import { useCat } from "@/hooks/cats/useCat";
 
@@ -12,7 +12,7 @@ const CatDetailsPage = ({ id }: { id: string }) => {
   if (loading) {
     return (
       <Container>
-        <LoadingSpinner />
+        <CatDetailsSkeleton />
       </Container>
     );
   }

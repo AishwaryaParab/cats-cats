@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import StatusMessage from "@/components/ui/status-message";
@@ -154,12 +155,7 @@ const ComparePage = () => {
         </div>
 
         <div className="mt-8 flex justify-center space-x-4">
-          <button
-            onClick={goBack}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition-colors"
-          >
-            Browse More Cats
-          </button>
+          <Button onClick={goBack}>Browse More Cats</Button>
         </div>
       </Container>
     </div>

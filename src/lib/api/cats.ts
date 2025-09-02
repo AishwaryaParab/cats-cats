@@ -12,6 +12,12 @@ export interface Breed {
   description: string;
   life_span: string;
   energy_level: number;
+  adaptability?: number;
+  affection_level?: number;
+  child_friendly?: number;
+  intelligence?: number;
+  social_needs?: number;
+  shedding_level?: number;
   weight: {
     metric: string;
   };
