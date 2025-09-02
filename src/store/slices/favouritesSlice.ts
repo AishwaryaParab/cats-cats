@@ -177,6 +177,9 @@ const favouritesSlice = createSlice({
           state.favouriteImageIds = state.favouriteImageIds.filter(
             (id) => id !== favourite.image_id
           );
+          state.items = state.items.filter(
+            (fav) => fav.image_id !== favourite.image_id
+          );
         }
       })
       .addCase(

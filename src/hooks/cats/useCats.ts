@@ -51,6 +51,7 @@ export const useCats = ({
   const [breeds, setBreeds] = useState<BreedData[]>([]);
   const [breedsLoading, setBreedsLoading] = useState(true);
   const [breedsError, setBreedsError] = useState<string | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   // --- Sync state with URL whenever it changes ---
   useEffect(() => {
@@ -67,6 +68,8 @@ export const useCats = ({
 
     const breedsParam = searchParams.get("breeds");
     setSelectedBreeds(breedsParam ? breedsParam.split(",") : []);
+
+    setInitialized(true);
   }, [searchParams]);
 
   useEffect(() => {
@@ -92,6 +95,7 @@ export const useCats = ({
   }, []);
 
   useEffect(() => {
+    if (!initialized) return;
     const fetchData = async () => {
       setLoading(true);
       setError(null);

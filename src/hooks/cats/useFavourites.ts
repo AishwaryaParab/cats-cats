@@ -12,12 +12,6 @@ export const useFavourites = () => {
   const { items, favouriteImageIds, loading, error, initialized, pagination } =
     favourites;
   const dispatch = useAppDispatch();
-  // const [page, setPage] = useState(() => {
-  //   if (typeof window === "undefined") return 1;
-  //   const pageParam = new URLSearchParams(window.location.search).get("page");
-  //   const parsed = pageParam ? parseInt(pageParam, 10) : NaN;
-  //   return !isNaN(parsed) && parsed > 0 ? parsed : 1;
-  // });
 
   useEffect(() => {
     if (!initialized && !loading) {

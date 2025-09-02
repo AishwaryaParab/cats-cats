@@ -11,9 +11,10 @@ interface CompareItem {
 interface CompareContextState {
   compareItems: CompareItem[];
   addToCompare: (item: CompareItem) => boolean;
-  removeFromCompare: (breedId: string) => void;
+  removeFromCompare: (id: string) => void;
   clearCompare: () => void;
-  isInCompare: (breedId: string) => boolean;
+  isBreedInCompare: (breedId: string) => boolean;
+  isImageInCompare: (imageId: string) => boolean;
   canAddMore: boolean;
 }
 
@@ -36,16 +37,20 @@ export const CompareProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
 
-  const removeFromCompare = (breedId: string) => {
-    setCompareItems((prev) => prev.filter((item) => item.breedId !== breedId));
+  const removeFromCompare = (id: string) => {
+    setCompareItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const clearCompare = () => {
     setCompareItems([]);
   };
 
-  const isInCompare = (breedId: string): boolean => {
+  const isBreedInCompare = (breedId: string): boolean => {
     return compareItems.some((item) => item.breedId === breedId);
+  };
+
+  const isImageInCompare = (imageId: string): boolean => {
+    return compareItems.some((item) => item.id === imageId);
   };
 
   const canAddMore = compareItems.length < MAX_COMPARE_COUNT;
@@ -57,7 +62,8 @@ export const CompareProvider = ({ children }: { children: ReactNode }) => {
         addToCompare,
         removeFromCompare,
         clearCompare,
-        isInCompare,
+        isBreedInCompare,
+        isImageInCompare,
         canAddMore,
       }}
     >

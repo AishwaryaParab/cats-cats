@@ -20,17 +20,22 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
   const [imgSrc, setImageSrc] = useState(url || "/images/cat-placeholder.png");
   const [imageLoaded, setImageLoaded] = useState(false);
   const breed: Breed | null = breeds ? breeds[0] : null;
-  const { addToCompare, removeFromCompare, isInCompare, canAddMore } =
-    useCompare();
+  const {
+    addToCompare,
+    removeFromCompare,
+    isBreedInCompare,
+    isImageInCompare,
+    canAddMore,
+  } = useCompare();
 
   const handleCompareToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
     if (breed) {
-      if (isInCompare(breed.id)) {
-        removeFromCompare(breed?.id);
-      } else if (canAddMore && breed) {
+      if (isImageInCompare(id)) {
+        removeFromCompare(id);
+      } else if (canAddMore && !isBreedInCompare(breed.id)) {
         addToCompare({
           id,
           breedId: breed.id,
@@ -44,7 +49,7 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
   return (
     <div className="flex justify-center">
       <div className="bg-foreground text-background rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-        <div className="relative w-[250px] h-[250px] bg-gray-100 rounded-lg">
+        <div className="relative w-[250px] h-[250px] bg-gray-100 rounded-t-lg">
           {!imageLoaded && (
             <div className="absolute inset-0 flex justify-center items-center">
               <LoadingSpinner />
@@ -88,27 +93,26 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
           {breed && (
             <button
               onClick={handleCompareToggle}
-              disabled={!canAddMore || isInCompare(breed.id)}
               className={`absolute top-4 left-4 p-2 rounded-full backdrop-blur-sm transition-all duration-200 transform hover:scale-110 active:scale-95 ${
-                isInCompare(breed.id)
+                isImageInCompare(id)
                   ? "bg-blue-500 text-white"
-                  : canAddMore || isInCompare(breed.id)
+                  : canAddMore || isImageInCompare(breed.id)
                   ? "bg-white/90 hover:bg-white text-gray-700 hover:text-blue-500"
                   : "bg-gray-300/60 cursor-not-allowed text-gray-400"
               }`}
               aria-label={
-                isInCompare(breed.id)
+                isImageInCompare(id)
                   ? `Remove ${breed.name} from comparison`
                   : `Add ${breed.name} to comparison`
               }
             >
               <div className="relative w-5 h-5">
-                {isInCompare(breed.id) ? (
+                {isImageInCompare(id) ? (
                   <Check className="w-5 h-5 animate-in zoom-in-50 duration-200" />
                 ) : (
                   <div
                     className={`w-5 h-5 border-2 rounded transition-colors ${
-                      canAddMore || isInCompare(breed.id)
+                      canAddMore || isImageInCompare(breed.id)
                         ? "border-gray-400"
                         : "border-gray-300"
                     }`}
@@ -118,11 +122,11 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
             </button>
           )}
         </div>
-        <div className="mt-2 px-2">
-          <h3 className="text-lg font-semibold text-center">
-            {breed?.name || "Unknown Breed"}
-          </h3>
-        </div>
+        {breed?.name && (
+          <div className="mt-2 px-2">
+            <h3 className="text-lg font-semibold text-center">{breed.name}</h3>
+          </div>
+        )}
 
         <div className="flex justify-center">
           <Link href={`/cats/${id}`}>

@@ -60,7 +60,7 @@ const ComparePage = () => {
             <table className="w-full">
               <thead className="bg-accent/30">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold bg-accent/30 text-foreground sticky left-0 z-10">
+                  <th className="px-6 py-4 text-left text-sm font-semibold bg-accent text-foreground sticky left-0 z-10">
                     Characteristic
                   </th>
                   {breeds.map((breed) => (
@@ -88,7 +88,7 @@ const ComparePage = () => {
                   ))}
                 </tr>
                 <tr className="bg-accent/10">
-                  <td className="px-6 py-4 font-medium sticky left-0 bg-accent/10 z-10">
+                  <td className="px-6 py-4 font-medium sticky left-0 bg-accent z-10">
                     Life Span
                   </td>
                   {breeds.map((breed) => (
@@ -116,7 +116,7 @@ const ComparePage = () => {
                   ))}
                 </tr>
                 <tr className="bg-accent/10">
-                  <td className="px-6 py-4 font-medium sticky left-0 bg-accent/10 z-10">
+                  <td className="px-6 py-4 font-medium sticky left-0 bg-accent z-10">
                     Temperament
                   </td>
                   {breeds.map((breed) => (
@@ -133,7 +133,7 @@ const ComparePage = () => {
                   ))}
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 font-mediumsticky left-0 bg-card z-10">
+                  <td className="px-6 py-4 font-medium sticky left-0 bg-card z-10">
                     Description
                   </td>
                   {breeds.map((breed) => (
