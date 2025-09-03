@@ -135,19 +135,19 @@ export const useCats = ({
   };
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    // setPage(newPage);
     updateUrl(newPage, sortOrder, selectedBreeds);
   };
 
   const handleSortChange = (newSort: SortOrder) => {
-    setSortOrder(newSort);
+    // setSortOrder(newSort);
     updateUrl(page, newSort, selectedBreeds);
   };
 
   const handleBreedsChange = (newBreedIds: string[]) => {
-    setSelectedBreeds(newBreedIds);
+    // setSelectedBreeds(newBreedIds);
     // Reset page to 1 when filters change
-    setPage(1);
+    // setPage(1);
     updateUrl(1, sortOrder, newBreedIds);
   };
 
