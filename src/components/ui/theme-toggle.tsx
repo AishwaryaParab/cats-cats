@@ -2,9 +2,24 @@
 
 import { useTheme } from "@/context/theme-context";
 import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <button
+        className="relative inline-flex h-10 w-10 items-center justify-center rounded-md bg-background text-foreground cursor-pointer"
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <button

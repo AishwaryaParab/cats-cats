@@ -30,6 +30,10 @@ A **Next.js + React** application built using the [Cat API](https://thecatapi.co
 
 ### Additional Highlights
 
+- Extended search functionality to allow **searching by multiple breeds**.
+- Users can like and save cats, which are displayed on a dedicated **Favourites** Page. Implemented with Redux Toolkit.
+- **Compare up to 3 breeds** at once. A floating compare button appears when breeds are selected, leading to a dedicated compare page. Implemented using Context API.
+- Support for light and dark modes, implemented with Context API.
 - **Backend API routes in Next.js** used to **secure the API key** instead of exposing it on the client.
 - Strongly typed with **TypeScript**.
 - Shared **Header** and **Footer** across pages for consistent branding.
