@@ -17,7 +17,7 @@ interface CatCardProps {
 }
 
 const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
-  const [imgSrc, setImageSrc] = useState(url || "/images/cat-placeholder.png");
+  const [imgSrc, setImgSrc] = useState(url || "/images/cat-placeholder.png");
   const [imageLoaded, setImageLoaded] = useState(false);
   const breed: Breed | null = breeds ? breeds[0] : null;
   const {
@@ -64,7 +64,7 @@ const CatCard = ({ id, url, breeds, isLiked, onHeartClick }: CatCardProps) => {
               imageLoaded ? "opacity-100" : "opacity-100"
             }`}
             sizes="250px"
-            onError={() => setImageSrc("/images/cat-placeholder.png")}
+            onError={() => setImgSrc("/images/cat-placeholder.png")}
             onLoad={() => setImageLoaded(true)}
           />
 

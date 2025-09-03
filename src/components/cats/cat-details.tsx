@@ -1,15 +1,23 @@
+"use client";
+
 import { useFavourites } from "@/hooks/cats/useFavourites";
 import { Cat } from "@/lib/api/cats";
 import { ArrowLeft, CatIcon, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import CatCharacteristics from "./cat-characteristics";
+import { useState } from "react";
+import LoadingSpinner from "../ui/loading-spinner";
 
 interface CatDetailsProps {
   cat: Cat;
 }
 
 const CatDetails = ({ cat }: CatDetailsProps) => {
+  const [imgSrc, setImgSrc] = useState(
+    cat.url || "/images/cat-placeholder.png"
+  );
+  const [imageLoaded, setImageLoaded] = useState(false);
   const breed = cat?.breeds?.[0];
   const { toggleFavourite, isFavourite } = useFavourites();
   const isLiked = isFavourite(cat.id);
@@ -54,11 +62,18 @@ const CatDetails = ({ cat }: CatDetailsProps) => {
 
       <section className="flex flex-col lg:flex-row gap-4">
         <div className="relative lg:w-1/2 h-100 rounded-lg">
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex justify-center items-center">
+              <LoadingSpinner />
+            </div>
+          )}
           <Image
-            src={cat.url}
+            src={imgSrc}
             alt={breed ? `${breed.name} cat image` : "Beautiful cat image"}
             fill
             className="object-cover rounded-lg"
+            onError={() => setImgSrc("/images/cat-placeholder.png")}
+            onLoad={() => setImageLoaded(true)}
           />
           <button
             onClick={(e) => handleLike(e, cat.id)}

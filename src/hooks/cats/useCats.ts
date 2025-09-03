@@ -81,7 +81,7 @@ export const useCats = ({
         const res = await catsApi.fetchBreeds();
         setBreeds(res.data);
       } catch (err) {
-        setError(
+        setBreedsError(
           err instanceof Error
             ? err.message
             : "Something went wrong! Please try again later."

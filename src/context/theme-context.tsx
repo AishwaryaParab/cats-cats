@@ -22,7 +22,7 @@ interface ThemeProviderProps {
 }
 
 const initialState: ThemeContextState = {
-  theme: "dark",
+  theme: DEFAULT_THEME,
   setTheme: () => null,
   toggleTheme: () => null,
 };
